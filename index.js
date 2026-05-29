@@ -1,3 +1,4 @@
+```javascript
 const {
   Client,
   GatewayIntentBits,
@@ -15,12 +16,20 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
+// =======================
+// DATA
+// =======================
+
 let totalMoney = 0;
 let donors = {};
 
+// =======================
+// SLASH COMMANDS
+// =======================
+
 const commands = [
 
-  // Donate
+  // DONATE
   new SlashCommandBuilder()
     .setName('donate')
     .setDescription('Donate vào quỹ')
@@ -30,17 +39,17 @@ const commands = [
         .setRequired(true)
     ),
 
-  // Xem quỹ
+  // QUỸ
   new SlashCommandBuilder()
     .setName('quy')
     .setDescription('Xem tổng quỹ'),
 
-  // Top donate
+  // TOP DONATE
   new SlashCommandBuilder()
     .setName('topdonate')
     .setDescription('Xem top donate'),
 
-  // Trừ quỹ
+  // TRỪ QUỸ
   new SlashCommandBuilder()
     .setName('truquy')
     .setDescription('Trừ tiền khỏi quỹ')
@@ -55,11 +64,14 @@ const commands = [
         .setRequired(true)
     )
 
-].map(cmd => cmd.toJSON());
+].map(command => command.toJSON());
+
+// =======================
+// REGISTER COMMANDS
+// =======================
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
-// Register Slash Commands
 (async () => {
   try {
 
@@ -80,17 +92,26 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
   }
 })();
 
-// Bot Ready
+// =======================
+// BOT READY
+// =======================
+
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
-// Commands
+// =======================
+// INTERACTIONS
+// =======================
+
 client.on('interactionCreate', async interaction => {
 
   if (!interaction.isChatInputCommand()) return;
 
+  // =======================
   // DONATE
+  // =======================
+
   if (interaction.commandName === 'donate') {
 
     const money = interaction.options.getInteger('money');
@@ -118,7 +139,10 @@ client.on('interactionCreate', async interaction => {
     });
   }
 
+  // =======================
   // QUỸ
+  // =======================
+
   if (interaction.commandName === 'quy') {
 
     const embed = new EmbedBuilder()
@@ -132,7 +156,10 @@ client.on('interactionCreate', async interaction => {
     });
   }
 
+  // =======================
   // TOP DONATE
+  // =======================
+
   if (interaction.commandName === 'topdonate') {
 
     const sorted = Object.entries(donors)
@@ -156,7 +183,10 @@ client.on('interactionCreate', async interaction => {
     });
   }
 
+  // =======================
   // TRỪ QUỸ
+  // =======================
+
   if (interaction.commandName === 'truquy') {
 
     const money = interaction.options.getInteger('money');
@@ -184,5 +214,9 @@ client.on('interactionCreate', async interaction => {
 
 });
 
-// Login Bot
+// =======================
+// LOGIN
+// =======================
+
 client.login(TOKEN);
+```
